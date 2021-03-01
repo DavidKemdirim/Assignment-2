@@ -106,22 +106,22 @@ a = l*n;
 b = w*n/2;
 add = 0;
        
-for i=1:n 
-    for j=1:n           
-        for k = 1:10
-
-            add = add +(1/k)*cosh(k*pi*i/a)/cosh(k*pi*b/a)*sin(k*pi*j/a);
-            V(i,j)=4*Vo/pi*add;
-
-            figure(4)
-            surf(x,y,V,'EdgeColor','none')     
-            xlabel('x'),ylabel('y'),zlabel('V(x,y)')
-            title('Analytical Solution Mesh')
-
-            pause(0.01)
-        end 
-    end
-end       
+% for i=1:n 
+%     for j=1:n           
+%         for k = 1:10
+% 
+%             add = add +(1/k)*cosh(k*pi*i/a)/cosh(k*pi*b/a)*sin(k*pi*j/a);
+%             V(i,j)=4*Vo/pi*add;
+% 
+%             figure(4)
+%             surf(x,y,V,'EdgeColor','none')     
+%             xlabel('x'),ylabel('y'),zlabel('V(x,y)')
+%             title('Analytical Solution Mesh')
+% 
+%             pause(0.01)
+%         end 
+%     end
+% end       
 
 % Boundary conditions 2:
 V(n,1:n)=0; % Bottom
@@ -225,7 +225,7 @@ end
 
 figure(6) 
 subplot(2,1,1),pcolor(sig'),
-title('Conduction Plot')
+title('Conductivity Plot')
 xlabel('x'),ylabel('y')
 
 subplot(2,1,2),pcolor(V)
@@ -243,8 +243,8 @@ figure(8)
 sig = 00:0.1:1;
 I = 100*sig;
 plot(sig,I)
-title('Conduction vs Current')
-xlabel('Conudction'),ylabel('Current')
+title('Conductivity vs Current')
+xlabel('Conudctivity'),ylabel('Current')
 
 
 
