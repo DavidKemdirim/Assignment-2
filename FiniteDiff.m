@@ -35,93 +35,93 @@ steps = 500;
 % limit = 1e-4;
 % error = 1;
 
-% % Boundary conditions 1a:
-% V(n,1:n)=0; % Bottom
-% V(1,1:n)=0; % Top
-% V(1:n,1)=Vo; % left
-% V(1:n,n)=0; % right
+% Boundary conditions 1a:
+V(n,1:n)=0; % Bottom
+V(1,1:n)=0; % Top
+V(1:n,1)=Vo; % left
+V(1:n,n)=0; % right
 
-% for k = 1:steps
-% % while error > limit
-% %     
-% %     Vprev = V;
-%        
-%     for i=2:n-1 % skipping BC in iterations
-%         for j=2:n-1
-%             V(i,j)=(V(i+1,j)+V(i-1,j)+V(i,j-1)+V(i,j+1))/4;
-%         end
-%     end  
+for k = 1:steps
+% while error > limit
 %     
-% %     error=max(max(abs(Vprev-V)));
-%     
-%     figure(1)
-%     subplot(2,1,1),pcolor(x,y,V),shading interp, colormap;
-%     title('2D Temperature Plots')
-%     xlabel('x')
-%     ylabel('y')
-%        
-%     subplot(2,1,2),
-%     [Ex,Ey] = gradient(V);
-%     quiver(-Ey,-Ex,10);
-%     title('Current Density')
-%     
-% %     pause(0.01)
-% end
-
-% % Boundary conditions 1b:
-% V(n,1:n)=0; % Bottom
-% V(1,1:n)=0; % Top
-% V(1:n,1)=Vo; % left
-% V(1:n,n)=Vo; % right
-
-% for k = 1:steps
-%        
-%     for i=2:n-1 % skipping BC in iterations
-%         for j=2:n-1
-%             V(i,j)=(V(i+1,j)+V(i-1,j)+V(i,j-1)+V(i,j+1))/4;
-%         end
-%     end       
-%     
-%     figure(2)
-%     subplot(2,1,1),pcolor(x,y,V),shading interp, colormap;
-%     title('2D Temperature Plots')
-%     xlabel('x')
-%     ylabel('y')
-%     colorbar;
-%        
-%     subplot(2,1,2),
-%     [Ex,Ey] = gradient(V);
-%     quiver(-Ey,-Ex,10);
-%     title('Current Density')
-%     
+%     Vprev = V;
+       
+    for i=2:n-1 % skipping BC in iterations
+        for j=2:n-1
+            V(i,j)=(V(i+1,j)+V(i-1,j)+V(i,j-1)+V(i,j+1))/4;
+        end
+    end  
+    
+%     error=max(max(abs(Vprev-V)));
+    
+    figure(1)
+    subplot(2,1,1),pcolor(x,y,V),shading interp, colormap;
+    title('2D Voltage Plots')
+    xlabel('x')
+    ylabel('y')
+       
+    subplot(2,1,2),
+    [Ex,Ey] = gradient(V);
+    quiver(-Ey,-Ex,10);
+    title('Current Density')
+    
 %     pause(0.01)
-% end
-% 
-% figure(3)
-% surf(x,y,V,'EdgeColor','none')     
-% xlabel('x'),ylabel('y'),zlabel('V(x,y)')
-% title('Numerical Solution Mesh')
+end
 
-% a = l*n;
-% b = w*n/2;
-% add = 0;
-%        
-% for i=1:n 
-%     for j=1:n           
-%         for k = 1:10
-% 
-%             add = add +(1/k)*cosh(k*pi*i/a)/cosh(k*pi*b/a)*sin(k*pi*j/a);
-%             V(i,j)=4*Vo/pi*add;
-% 
-%             figure(4)
-%             surf(x,y,V,'EdgeColor','none')     
-%             xlabel('x'),ylabel('y'),zlabel('V(x,y)')
-%             title('Analytical Solution Mesh')
-% 
-%             pause(0.01)
-%         end 
-%     end
-% end       
+% Boundary conditions 1b:
+V(n,1:n)=0; % Bottom
+V(1,1:n)=0; % Top
+V(1:n,1)=Vo; % left
+V(1:n,n)=Vo; % right
+
+for k = 1:steps
+       
+    for i=2:n-1 % skipping BC in iterations
+        for j=2:n-1
+            V(i,j)=(V(i+1,j)+V(i-1,j)+V(i,j-1)+V(i,j+1))/4;
+        end
+    end       
+    
+    figure(2)
+    subplot(2,1,1),pcolor(x,y,V),shading interp, colormap;
+    title('2D Voltage Plots')
+    xlabel('x')
+    ylabel('y')
+    colorbar;
+       
+    subplot(2,1,2),
+    [Ex,Ey] = gradient(V);
+    quiver(-Ey,-Ex,10);
+    title('Current Density')
+    
+    pause(0.01)
+end
+
+figure(3)
+surf(x,y,V,'EdgeColor','none')     
+xlabel('x'),ylabel('y'),zlabel('V(x,y)')
+title('Numerical Solution Mesh')
+
+a = l*n;
+b = w*n/2;
+add = 0;
+       
+for i=1:n 
+    for j=1:n           
+        for k = 1:10
+
+            add = add +(1/k)*cosh(k*pi*i/a)/cosh(k*pi*b/a)*sin(k*pi*j/a);
+            V(i,j)=4*Vo/pi*add;
+
+            figure(4)
+            surf(x,y,V,'EdgeColor','none')     
+            xlabel('x'),ylabel('y'),zlabel('V(x,y)')
+            title('Analytical Solution Mesh')
+
+            pause(0.01)
+        end 
+    end
+end       
 
 % Boundary conditions 2:
 V(n,1:n)=0; % Bottom
@@ -138,38 +138,32 @@ Boxes{2}.X = [0.5 1.0]; %bottom box
 Boxes{2}.Y = [0.0 0.3];
 %         Boxes{2}.BC = 0.0;
 
-sigmain = 1e-2;
-sigmaout = 1;
+%defining conduction matrix
+sigma_in = 1e-2;
+sigma_out = 1;
+sig = ones(n);
+ibc = i*l/n;
+jbc = j*w/n;
 
-for k = 1:steps/5
+% defining conduction in boxes
+for i = floor(Boxes{1}.X(1,1)*n/l):ceil(Boxes{1}.X(1,2)*n/l)
+    for j = 1:Boxes{2}.Y(1,2)*n
+        sig(i,j) = sigma_in;
+    end
+    for j = Boxes{1}.Y(1,1)*n:n
+        sig(i,j) = sigma_in;
+    end
+end
+
+
+for k = 1:steps
 % while error > limit
 %     
 %     Vprev = V;
        
     for i=2:n-1 % skipping BC in iterations
-        for j=2:n-1  
-            
-            ibc = i*l/n;
-            jbc = j*w/n;
-            
-            if Boxes{1}.X(1,1)<ibc && ibc<Boxes{1}.X(1,2) &&...
-               Boxes{1}.Y(1,1)<jbc && jbc<Boxes{1}.Y(1,2) ||...%firstbox
-               Boxes{2}.X(1,1)<ibc && ibc<Boxes{2}.X(1,2) &&...
-               Boxes{2}.Y(1,1)<jbc && jbc<Boxes{2}.Y(1,2) %second box
-               
-               r = rand;
-           
-               if r > sigma
-                   h = ceil((rand*[Boxes{1}.Y(1,1)-Boxes{2}.Y(1,2)]...
-                       +Boxes{2}.Y(1,2))*100);
-                   V(i,h)=(V(i+1,j)+V(i-1,j)+V(i,j-1)+V(i,j+1))/4;
-               else
-                   V(i,j)=(V(i+1,j)+V(i-1,j)+V(i,j-1)+V(i,j+1))/4;
-               end
-                              
-            end
-            V(i,j)=(V(i+1,j)+V(i-1,j)+V(i,j-1)+V(i,j+1))/4;
-            
+        for j=2:n-1
+            V(i,j)=sig(i,j)*(V(i+1,j)+V(i-1,j)+V(i,j-1)+V(i,j+1))/4;            
         end
     end  
     
@@ -177,7 +171,7 @@ for k = 1:steps/5
     
     figure(5)
     subplot(2,1,1),pcolor(x,y,V),shading interp, colormap;
-    title('2D Temperature Plots')
+    title('2D Voltage Plots')
     xlabel('x')
     ylabel('y')
     hold on
@@ -200,10 +194,9 @@ for k = 1:steps/5
     plot(bx3,by4,'k')
     hold off
 
-       
     subplot(2,1,2),
     [Ex,Ey] = gradient(V);
-    quiver(-Ey,-Ex,10);
+    quiver(-Ey,-Ex,50);
     title('Current Density')
     hold on 
     
@@ -229,6 +222,29 @@ for k = 1:steps/5
         pause(0.05)
     end
 end
+
+figure(6) 
+subplot(2,1,1),pcolor(sig'),
+title('Conduction Plot')
+xlabel('x'),ylabel('y')
+
+subplot(2,1,2),pcolor(V)
+title('Electric Field')
+xlabel('x'),ylabel('y')
+
+figure(7)
+Area = 500:100:2000;
+I = 100./Area;
+plot(Area,I)
+title('Bottle Neck Area vs Current')
+xlabel('Bottle Neck Area'),ylabel('Current')
+
+figure(8)
+sig = 00:0.1:1;
+I = 100*sig;
+plot(sig,I)
+title('Conduction vs Current')
+xlabel('Conudction'),ylabel('Current')
 
 
 
